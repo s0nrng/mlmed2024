@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{float}
+
+\title{ECGReport}
+\author{Son Nguyen-Dang}
+\date{February 2024}
+
+\begin{document}
+
+\maketitle
+\newpage
+
+\section{Introduction}
+In developed countries, heart problems are the leading cause of death, with 17.9 million deaths annually, representing 31\% of global deaths. This highlights the need for early diagnosis, detection, and treatment.
+
+Electrocardiograms (ECGs), a widely used, non-invasive, and affordable tool, are crucial for heart health evaluation. However, interpreting ECGs requires highly skilled electrophysiologists, making the process time-consuming and subjective. As healthcare embraces new technology, the focus is shifting towards automated ECG analysis, aiding doctors in assessing patient risk.
+
+The recent surge in electronic health records (EHRs) containing organized digital medical data, along with powerful data analysis tools, has reignited machine learning (ML) as a driving force in healthcare innovation. Advancements in hardware, including cloud computing, high-performance computers, and graphics processing units (GPUs), combined with efficient software techniques, have fueled the development of new ML technologies, particularly deep learning. These data-driven techniques automatically extract features and patterns relevant to specific tasks.
+
+Similar to their success in speech recognition and image analysis, these technologies are being applied in clinical electrophysiology. Hospitals are utilizing large digital ECG datasets and advanced computing platforms to implement and adopt new ML methods, allowing them to extract the most valuable information from these comprehensive datasets.
+
+\section{Data Understanding}
+Arrythmia dataset has been used in exploring heartbeat classification using deep neural network architectures, and observing some of the capabilities of transfer learning on it. The signals correspond to electrocardiogram (ECG) shapes of heartbeats for the normal case and the cases affected by different arrhythmias and myocardial infarction. These signals are preprocessed and segmented, with each segment corresponding to a heartbeat.
+
+The Arrhythmia dataset contains 109,446 samples, each representing data related to a specific heart rhythm. These samples are classified into five different categories. The data is recorded at a sampling frequency of 125 Hz. The dataset originates from Physionet's MIT-BIH Arrhythmia Dataset. The five categories are represented by single letters: N, S, V, F, and Q, represented by integer value of range 0 to 4. As the quantity of data points in first class of training data is too high, we decided to remove 65,000 instances to avoid creating bias in the model. The training and testing data distribution can be seen in the Fig.\ref{fig:traindist} and Fig.\ref{fig:testdist}.
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{Unknown-23.png}
+    \caption{Train Distribution}
+    \label{fig:traindist}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{Unknown-22.png}
+    \caption{Test Distribution}
+    \label{fig:testdist}
+  \end{minipage}
+\end{figure}
+
+\section{Network Architecture}
+\begin{figure}[H]
+\begin{minipage}[b]{0.35\textwidth}
+\includegraphics[width=\textwidth]{pipeline.png}
+\caption{Architecture}
+\label{fig:pipeline}
+
+\end{minipage}
+\begin{minipage}[b]{0.7\textwidth}
+In 2018, Mohammad et al. proposed a novel framework for ECG analysis that is able to represent the signal in a way that is transferable between different tasks. For this to happen, they describe a deep neural network architecture which offers a considerable capacity for learning such representations. This network has been trained on the task of arrhythmia detection for learning which it is plausible to assume that the model needs to learn most of the shape-related features of the ECG signal. Also, they have a large amount of labeled data for this task, which makes it easy to train a network with a large amount of parameters. Furthermore, they show that the signal representation learned from this task is successfully transferable to the task MI prediction using ECG signals. This method allows us to use these deep representations to share knowledge between ECG recognition tasks for which enough information may not be available for training a deep architecture.\\
+
+Their proposed architecture can be seen in Fig.\ref{fig:pipeline}
+\end{minipage}
+\end{figure}
+\newpage
+\section{Experiment}
+For this experiment, we implement the architecture using Python with PyTorch on a Apple Silicon's M1 MPS. We use the Adam optimizer with CrossEntropyLoss function. We trained for a total of 100 epochs with learning rate equal to 0.001. The training and testing loss progression can be seen in Fig.\ref{fig:loss}.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{Unknown-24.png}
+    \caption{Train and Test Loss Progression}
+    \label{fig:loss}
+\end{figure}
+
+\end{document}
